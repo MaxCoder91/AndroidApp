@@ -30,14 +30,14 @@ public class MiCalendario extends AppCompatActivity {
         Cursor cursor = sqLiteDatabase.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do {
-                String titulo = cursor.getString(0);
-                String descripcion = cursor.getString(1);
-                String fecha = cursor.getString(2);
-                String hinicio = cursor.getString(3);
-                String hfinal = cursor.getString(4);
-                int idTipo = cursor.getInt(5);
-                int idCategoria = cursor.getInt(6);
-                String item = titulo+" "+descripcion+" "+fecha+" "+hinicio+" "+hfinal+" "+idTipo+" "+idCategoria;
+                String titulo = cursor.getString(1);
+                String descripcion = cursor.getString(2);
+                String fecha = cursor.getString(3);
+                String hinicio = cursor.getString(4);
+                String hfinal = cursor.getString(5);
+                //int idTipo = cursor.getInt(6);
+                //int idCategoria = cursor.getInt(7);
+                String item = titulo+" "+fecha+" De: "+hinicio+" A: "+hfinal;
                 datos.add(item);
             }while (cursor.moveToNext());
         }

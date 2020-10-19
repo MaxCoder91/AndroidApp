@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tvRecPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                Intent intent = new Intent(MainActivity.this, RestablecerPass.class);
                 startActivity(intent);
             }
         });
