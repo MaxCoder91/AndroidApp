@@ -18,6 +18,14 @@ import java.util.ArrayList;
 public class MiCalendario extends AppCompatActivity {
     ListView lvEventos;
     Button btnVolver;
+
+    //Método de refresh.(AutoPostBack)
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        inflateView();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +49,6 @@ public class MiCalendario extends AppCompatActivity {
                 fecha = item.split("/")[3];
                 hinicio = item.split("/")[4];
                 hfinal = item.split("/")[5];
-                idTipo = item.split("/")[6];
-                idCategoria = item.split("/")[7];
 
                 Intent intent = new Intent(MiCalendario.this, EditarEvento.class);
                 intent.putExtra("id",id);
@@ -51,8 +57,6 @@ public class MiCalendario extends AppCompatActivity {
                 intent.putExtra("fecha",fecha);
                 intent.putExtra("hinicio",hinicio);
                 intent.putExtra("hfinal",hfinal);
-                intent.putExtra("idTipo",idTipo);
-                intent.putExtra("idCategoria",idCategoria);
                 startActivity(intent);
             }
         });
@@ -80,10 +84,7 @@ public class MiCalendario extends AppCompatActivity {
                 String fecha = cursor.getString(3);
                 String hinicio = cursor.getString(4);
                 String hfinal = cursor.getString(5);
-                int idTipo = cursor.getInt(6);
-                int idCategoria = cursor.getInt(7);
-                String item = id+"/"+titulo+"/"+descripcion+"/"+fecha+"/"+hinicio+"/"+hfinal+"/"+idTipo+"/"+idCategoria;
-                //String item = titulo+" "+fecha+" De: "+hinicio+" A: "+hfinal;
+                String item = id+" / "+titulo+" / "+descripcion+" / "+fecha+" / "+hinicio+" / "+hfinal;
                 datos.add(item);
             }while (cursor.moveToNext());
         }

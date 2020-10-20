@@ -85,9 +85,25 @@ public class EditarEvento extends AppCompatActivity {
                 idTipo = getIntent().getExtras().getString("idTipo");
                 idCategoria = getIntent().getExtras().getString("idCategoria");
                 Actualizar(titulo,descripcion,fecha,hinicio,hfinal,id,idTipo,idCategoria);
+                onBackPressed();
+            }
+        });
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id;
+                id = getIntent().getExtras().getString("id");
+                Eliminar(id);
+                onBackPressed();
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public void capturarFecha(){
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -179,7 +195,17 @@ public class EditarEvento extends AppCompatActivity {
         cvalues.put("hfinal",hfinal);
 
         int nfilas = sqLiteDatabase.update("tblEvento",cvalues,"id="+id,null);
-        Toast.makeText(this, "Update "+nfilas, Toast.LENGTH_SHORT).show();
+        if(nfilas==1){
+            Toast.makeText(this, "Registro actualizado con éxito", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Error al actualizar", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    public void Eliminar(String id){
+        DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        int nfilas = sqLiteDatabase.delete("tblEvento", "id="+id,null);
+        Toast.makeText(this, "Delete "+nfilas, Toast.LENGTH_SHORT).show();
     }
 }
