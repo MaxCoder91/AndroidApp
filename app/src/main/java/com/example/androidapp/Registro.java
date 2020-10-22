@@ -2,7 +2,9 @@ package com.example.androidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +37,7 @@ public class Registro extends AppCompatActivity {
     }
 
     public void crearCta(){
-        String nombre,apellido,mail,pass,repass;
+        String nombre,apellido,mail,pass;
 
         if(edtNombre.getText().toString().trim().equalsIgnoreCase("")){
             edtNombre.setError("Debe ingresar su nombre");
@@ -49,11 +51,31 @@ public class Registro extends AppCompatActivity {
             edtPass.setError("Debe ingresar una contraseña");
             //else if(edtPass.getText().toString()!=edtRePass.getText().toString()){
             //    edtRePass.setError("La contraseña debe coincidir");
+        }else if(!edtPass.getText().toString().trim().equals(edtRePass.getText().toString().trim())){
+            edtRePass.setError("La contraseña ingresada no coincide");
         }else{
             nombre = edtNombre.getText().toString();
             apellido = edtApellido.getText().toString();
             mail = edtCorreo.getText().toString();
             pass = edtPass.getText().toString();
+
+            DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
+            SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+            if(sqLiteDatabase!=null){
+                ContentValues cvalues = new ContentValues();
+                cvalues.put("nombre",nombre);
+                cvalues.put("apellido", apellido);
+                cvalues.put("correo",mail);
+                cvalues.put("pass",pass);
+                long nfilas = sqLiteDatabase.insert("tblUsuario",null,cvalues);
+                if(nfilas>0){
+                    Toast.makeText(this, "Registro insertado con éxito: "+nfilas, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
+            }
 
             Toast.makeText(this, "CUENTA REGISTRADA CON EXITO"+"\nUsuario: "+nombre+" "+apellido+
                     "\nCorreo: "+mail+" \nContraseña: "+pass, Toast.LENGTH_LONG).show();

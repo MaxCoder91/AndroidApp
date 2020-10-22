@@ -12,10 +12,10 @@ public class DbHelper extends SQLiteOpenHelper {
     String query2 = "CREATE TABLE tblCategoria(id INTEGER PRIMARY KEY, nombre TEXT)";
     String query3 = "CREATE TABLE tblTipo(id INTEGER PRIMARY KEY, nombre TEXT)";
     String query4 = "CREATE TABLE tblEvento(id INTEGER PRIMARY KEY AUTOINCREMENT,titulo TEXT NOT NULL,descripcion TEXT NOT NULL," +
-            "fecha TEXT NOT NULL, hinicio TEXT NOT NULL, hfinal TEXT NOT NULL,"+
+            "fecha TEXT NOT NULL, hinicio TEXT NOT NULL, hfinal TEXT NOT NULL,idTipo INTEGER NOT NULL, idCategoria INTEGER NOT NULL,"+
             "FOREIGN KEY(idTipo) REFERENCES tblTipo(id),FOREIGN KEY(idCategoria) REFERENCES tblCategoria(id))";
     String query5 = "CREATE TABLE tblUsuarioEvento" +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY(idUsuario) REFERENCES tblUsuario(id),FOREIGN KEY(idEvento) REFERENCES tblEvento(id))";
+            "(id INTEGER PRIMARY KEY AUTOINCREMENT,idUsuario INTEGER NOT NULL,idEvento INTEGER NOT NULL, FOREIGN KEY(idUsuario) REFERENCES tblUsuario(id),FOREIGN KEY(idEvento) REFERENCES tblEvento(id))";
 
     //String query4 = "CREATE TABLE tblEvento(id INTEGER PRIMARY KEY AUTOINCREMENT,titulo TEXT NOT NULL,descripcion TEXT NOT NULL," +
     //        "fecha TEXT NOT NULL, hinicio TEXT NOT NULL, hfinal TEXT NOT NULL,"+
