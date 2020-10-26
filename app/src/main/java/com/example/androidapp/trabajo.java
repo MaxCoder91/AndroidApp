@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 public class trabajo extends AppCompatActivity {
 
-    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc, edtAlarma;
+    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
 
     @Override
@@ -32,7 +32,6 @@ public class trabajo extends AppCompatActivity {
         edtHoraIni=findViewById(R.id.editTextHour1);
         edtHoraFin=findViewById(R.id.editTextHour2);
         edtDesc=findViewById(R.id.editTextMultiLine);
-        edtAlarma=findViewById(R.id.editTextAlarm);
         btnAgendar=findViewById(R.id.buttonCreate);
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +147,6 @@ public class trabajo extends AppCompatActivity {
         horaIni = edtHoraIni.getText().toString();
         horaFin = edtHoraFin.getText().toString();
         desc = edtDesc.getText().toString();
-        alarma = edtAlarma.getText().toString();
 
         DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -172,7 +170,7 @@ public class trabajo extends AppCompatActivity {
         }
 
         Toast.makeText(this, "Título: "+titulo+" \nFecha: "+fecha+" \nHora de Inicio: "+horaIni+
-                " \nHora de Término: "+horaFin+" \nDescripción: "+desc+" \nAlarma: "+alarma, Toast.LENGTH_LONG).show();
+                " \nHora de Término: "+horaFin+" \nDescripción: "+desc, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MenuPrincipal.class);
         startActivity(intent);
     }

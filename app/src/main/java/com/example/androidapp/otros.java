@@ -17,7 +17,7 @@ import java.util.Calendar;
 
 public class otros extends AppCompatActivity {
 
-    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc, edtAlarma;
+    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
 
     @Override
@@ -30,7 +30,6 @@ public class otros extends AppCompatActivity {
         edtHoraIni=findViewById(R.id.editTextHour4);
         edtHoraFin=findViewById(R.id.editTextHour5);
         edtDesc=findViewById(R.id.editTextMultiLine3);
-        edtAlarma=findViewById(R.id.editTextAlarm3);
         btnAgendar=findViewById(R.id.buttonCreate3);
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
@@ -144,10 +143,9 @@ public class otros extends AppCompatActivity {
         horaIni = edtHoraIni.getText().toString();
         horaFin = edtHoraFin.getText().toString();
         desc = edtDesc.getText().toString();
-        alarma = edtAlarma.getText().toString();
 
         Toast.makeText(this, "Título: " + titulo + " \nFecha: " + fecha + " \nHora de Inicio: " + horaIni +
-                " \nHora de Término: " + horaFin + " \nDescripción: " + desc + " \nAlarma: " + alarma, Toast.LENGTH_LONG).show();
+                " \nHora de Término: " + horaFin + " \nDescripción: " + desc, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MenuPrincipal.class);
         startActivity(intent);
     }
