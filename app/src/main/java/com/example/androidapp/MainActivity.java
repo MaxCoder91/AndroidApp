@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             for (DaoUsuario user : tblUsuarios){
                 if(user.getCorreo().equals(mail) && user.getPass().equals(pass)){
                     Intent intent = new Intent(this, MenuPrincipal.class);
-                    intent.putExtra("id",user.getId());
+                    intent.putExtra("idUser",user.getId());
                     intent.putExtra("nombre", user.getNombre());
                     intent.putExtra("apellido",user.getApellido());
                     intent.putExtra("correo",user.getCorreo());

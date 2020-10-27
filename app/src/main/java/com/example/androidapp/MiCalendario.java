@@ -43,6 +43,8 @@ public class MiCalendario extends AppCompatActivity {
                 item = lvEventos.getItemAtPosition(i).toString();
                 Toast.makeText(MiCalendario.this, "Item recuperado "+item, Toast.LENGTH_SHORT).show();
 
+
+
                 id = item.split("/")[0];
                 titulo = item.split("/")[1];
                 descripcion = item.split("/")[2];
@@ -76,6 +78,7 @@ public class MiCalendario extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String query = "SELECT * FROM tblEvento";
         Cursor cursor = sqLiteDatabase.rawQuery(query,null);
+
         if(cursor.moveToFirst()){
             do {
                 int id = cursor.getInt(0);

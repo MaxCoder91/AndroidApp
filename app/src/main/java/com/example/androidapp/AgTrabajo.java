@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class AgTrabjo extends AppCompatActivity {
+public class AgTrabajo extends AppCompatActivity {
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;

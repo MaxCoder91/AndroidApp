@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ftrabajo"
-    tools:context=".AgTrabjo">
+    tools:context=".AgTrabajo">
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#33000000"
+        android:shadowColor="#000000"
+        android:shadowRadius="8 "
+        android:shadowDx="3"
+        android:shadowDy="5"
         android:text="Trabajo"
         android:textAllCaps="true"
         android:textColor="#FFFFFF"

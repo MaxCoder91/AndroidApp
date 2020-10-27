@@ -22,7 +22,7 @@
         <activity android:name=".MiCalendario" />
         <activity android:name=".AgOtros" />
         <activity android:name=".AgEstudios" />
-        <activity android:name=".AgTrabjo" />
+        <activity android:name=".AgTrabajo" />
         <activity android:name=".Eventos" />
         <activity android:name=".Registro" />
         <activity android:name=".MenuPrincipal" />

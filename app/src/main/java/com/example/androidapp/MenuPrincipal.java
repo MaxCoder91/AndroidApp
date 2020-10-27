@@ -36,7 +36,7 @@ public class MenuPrincipal extends AppCompatActivity {
         btnTrabajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuPrincipal.this, AgTrabjo.class);
+                Intent intent = new Intent(MenuPrincipal.this, AgTrabajo.class);
                 startActivity(intent);
             }
         });
