@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditarEvento"></activity>
+        <activity android:name=".AgEventos"></activity>
+        <activity android:name=".EditarEvento" />
         <activity android:name=".RestablecerPass" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -19,10 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MiCalendario" />
-        <activity android:name=".otros" />
-        <activity android:name=".estudios" />
-        <activity android:name=".trabajo" />
-        <activity android:name=".eventos" />
+        <activity android:name=".AgOtros" />
+        <activity android:name=".AgEstudios" />
+        <activity android:name=".AgTrabjo" />
+        <activity android:name=".Eventos" />
         <activity android:name=".Registro" />
         <activity android:name=".MenuPrincipal" />
         <activity android:name=".MainActivity" />

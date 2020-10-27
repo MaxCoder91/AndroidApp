@@ -28,7 +28,7 @@ public class MenuPrincipal extends AppCompatActivity {
         btnEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuPrincipal.this, eventos.class);
+                Intent intent = new Intent(MenuPrincipal.this, Eventos.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +36,7 @@ public class MenuPrincipal extends AppCompatActivity {
         btnTrabajo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuPrincipal.this, trabajo.class);
+                Intent intent = new Intent(MenuPrincipal.this, AgTrabjo.class);
                 startActivity(intent);
             }
         });
@@ -44,7 +44,7 @@ public class MenuPrincipal extends AppCompatActivity {
         btnEstudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuPrincipal.this, estudios.class);
+                Intent intent = new Intent(MenuPrincipal.this, AgEstudios.class);
                 startActivity(intent);
             }
         });
@@ -52,7 +52,7 @@ public class MenuPrincipal extends AppCompatActivity {
         btnOtros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuPrincipal.this, otros.class);
+                Intent intent = new Intent(MenuPrincipal.this, AgOtros.class);
                 startActivity(intent);
             }
         });

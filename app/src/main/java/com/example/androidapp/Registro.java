@@ -67,20 +67,20 @@ public class Registro extends AppCompatActivity {
                 cvalues.put("apellido", apellido);
                 cvalues.put("correo",mail);
                 cvalues.put("pass",pass);
+                cvalues.put("idRol",2);
                 long nfilas = sqLiteDatabase.insert("tblUsuario",null,cvalues);
                 if(nfilas>0){
-                    Toast.makeText(this, "Registro insertado con éxito: "+nfilas, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Usuario registrado con éxito.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Bienvenido "+nombre+" "+apellido, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 }else{
-                    Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error al registrarse", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Verifique que sus datos estén correctos o no exista una cuenta asociada a su correo.", Toast.LENGTH_LONG).show();
                 }
             }else{
-                Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error al crear la bd", Toast.LENGTH_SHORT).show();
             }
-
-            Toast.makeText(this, "CUENTA REGISTRADA CON EXITO"+"\nUsuario: "+nombre+" "+apellido+
-                    "\nCorreo: "+mail+" \nContraseña: "+pass, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
         }
     }
 }

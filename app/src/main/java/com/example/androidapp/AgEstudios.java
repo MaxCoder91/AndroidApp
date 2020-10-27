@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class trabajo extends AppCompatActivity {
+public class AgEstudios extends AppCompatActivity {
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
@@ -25,14 +25,14 @@ public class trabajo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trabajo);
+        setContentView(R.layout.activity_estudios);
 
-        edtTitulo=findViewById(R.id.editTextTitle);
-        edtFecha=findViewById(R.id.editTextDate);
-        edtHoraIni=findViewById(R.id.editTextHour1);
-        edtHoraFin=findViewById(R.id.editTextHour2);
-        edtDesc=findViewById(R.id.editTextMultiLine);
-        btnAgendar=findViewById(R.id.buttonCreate);
+        edtTitulo=findViewById(R.id.editTextTitle2);
+        edtFecha=findViewById(R.id.editTextDate2);
+        edtHoraIni=findViewById(R.id.editTextHour);
+        edtHoraFin=findViewById(R.id.editTextHour3);
+        edtDesc=findViewById(R.id.editTextMultiLine2);
+        btnAgendar=findViewById(R.id.buttonCreate2);
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +58,6 @@ public class trabajo extends AppCompatActivity {
                 agendarEvento();
             }
         });
-
     }
 
     public void capturarFecha(){
@@ -141,38 +140,44 @@ public class trabajo extends AppCompatActivity {
         tpDialog.show();
     }
     public void agendarEvento(){
-        String titulo, fecha, horaIni, horaFin, desc, alarma;
-        titulo = edtTitulo.getText().toString();
-        fecha = edtFecha.getText().toString();
-        horaIni = edtHoraIni.getText().toString();
-        horaFin = edtHoraFin.getText().toString();
-        desc = edtDesc.getText().toString();
-
-        DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        if(sqLiteDatabase!=null){
-            ContentValues cvalues = new ContentValues();
-            cvalues.put("titulo",titulo);
-            cvalues.put("descripcion", desc);
-            cvalues.put("fecha",fecha);
-            cvalues.put("hinicio",horaIni);
-            cvalues.put("hfinal",horaFin);
-            cvalues.put("idTipo", 01);
-            cvalues.put("idCategoria",01);
-            long nfilas = sqLiteDatabase.insert("tblEvento",null,cvalues);
-            if(nfilas>0){
-                Toast.makeText(this, "Registro insertado con éxito: "+nfilas, Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
-            }
+        String titulo, fecha, horaIni="", horaFin="", desc;
+        if(edtTitulo.getText().toString().trim().equalsIgnoreCase("")){
+            edtTitulo.setError("Debe ingresar un tíulo");
+        }else if(edtFecha.getText().toString().trim().equalsIgnoreCase("")){
+            edtFecha.setError("Seleccione una fecha");
+        }else if(edtHoraIni.getText().toString().trim().equalsIgnoreCase("")){
+            edtHoraIni.setError("Seleccione hora de inicio");
+        }else if(edtHoraFin.getText().toString().trim().equalsIgnoreCase("")){
+            edtHoraFin.setError("Seleccione hora de término");
         }else{
-            Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
+            titulo = edtTitulo.getText().toString();
+            fecha = edtFecha.getText().toString();
+            horaIni = edtHoraIni.getText().toString();
+            horaFin = edtHoraFin.getText().toString();
+            desc = edtDesc.getText().toString();
+
+            DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
+            SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+            if(sqLiteDatabase!=null){
+                ContentValues cvalues = new ContentValues();
+                cvalues.put("titulo",titulo);
+                cvalues.put("descripcion", desc);
+                cvalues.put("fecha",fecha);
+                cvalues.put("hinicio",horaIni);
+                cvalues.put("hfinal",horaFin);
+                cvalues.put("idTipo",1);
+                cvalues.put("idCategoria",2);
+                long nfilas = sqLiteDatabase.insert("tblEvento",null,cvalues);
+                if(nfilas>0){
+                    Toast.makeText(this, "Evento registrado con éxito", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
+            }
+            Intent intent = new Intent(this, MenuPrincipal.class);
+            startActivity(intent);
         }
-
-        Toast.makeText(this, "Título: "+titulo+" \nFecha: "+fecha+" \nHora de Inicio: "+horaIni+
-                " \nHora de Término: "+horaFin+" \nDescripción: "+desc, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MenuPrincipal.class);
-        startActivity(intent);
     }
-
 }
