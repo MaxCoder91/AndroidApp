@@ -80,7 +80,8 @@ public class MiCalendario extends AppCompatActivity {
         ArrayList<String>datos= new ArrayList<>();
         DbHelper dbHelper = new DbHelper( this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        String query = "SELECT * FROM tblEvento";
+        int idUser = getIntent().getExtras().getInt("idUser");
+        String query = "SELECT DISTINCT * FROM tblEvento INNER JOIN tblUsuarioEvento ON (tblevento.id = tblusuarioevento.idEvento) WHERE tblUsuarioEvento.idUsuario="+idUser;
         Cursor cursor = sqLiteDatabase.rawQuery(query,null);
 
         if(cursor.moveToFirst()){
