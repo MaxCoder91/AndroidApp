@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 public class EditarEvento extends AppCompatActivity {
 
-    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc, edtAlarma;
+    private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnActualizar, btnEliminar;
 
     @Override
@@ -32,7 +32,6 @@ public class EditarEvento extends AppCompatActivity {
         edtHoraIni=findViewById(R.id.editTextHour6);
         edtHoraFin=findViewById(R.id.editTextHour7);
         edtDesc=findViewById(R.id.editTextMultiLine4);
-        edtAlarma=findViewById(R.id.editTextAlarm4);
         btnActualizar=findViewById(R.id.buttonEdit);
         btnEliminar=findViewById(R.id.buttonDelete);
 

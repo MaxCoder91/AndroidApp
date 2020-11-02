@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AgOtros extends AppCompatActivity {
@@ -168,6 +170,11 @@ public class AgOtros extends AppCompatActivity {
                 cvalues.put("idCategoria",3);
                 long nfilas = sqLiteDatabase.insert("tblEvento",null,cvalues);
                 if(nfilas>0){
+                    SQLiteDatabase insert2 = dbHelper.getWritableDatabase();
+                    ContentValues cvalues2 = new ContentValues();
+                    cvalues2.put("idUsuario",getIntent().getExtras().getInt("idUser"));
+                    cvalues2.put("idEvento",RescatarId(titulo,fecha,horaIni,horaFin,1,3));
+                    insert2.insert("tblUsuarioEvento",null,cvalues2);
                     Toast.makeText(this, "Evento registrado con éxito", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(this, "Error al insertar", Toast.LENGTH_SHORT).show();
@@ -175,8 +182,31 @@ public class AgOtros extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
             }
+            DaoUsuario user = new DaoUsuario();
+            user.setId(getIntent().getExtras().getInt("idUser"));
             Intent intent = new Intent(this, MenuPrincipal.class);
+            intent.putExtra("idUser",user.getId());
             startActivity(intent);
         }
+    }
+
+    public int RescatarId(String t,String f, String hi, String hf, int idt, int idc){
+        int idEvent=0;
+        ArrayList<String> datos = new ArrayList<>();
+        DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM tblevento";
+        Cursor cursor = sqLiteDatabase.rawQuery(query,null);
+
+        if(cursor.moveToFirst()){
+            do {
+                if(t.equals(cursor.getString(1))&&f.equals(cursor.getString(3))&&
+                        hi.equals(cursor.getString(4))&&hf.equals(cursor.getString(5))&&idt==cursor.getInt(6)&&
+                        idc==cursor.getInt(7)){
+                    idEvent=cursor.getInt(0);
+                }
+            }while(cursor.moveToNext());
+        }
+        return idEvent;
     }
 }

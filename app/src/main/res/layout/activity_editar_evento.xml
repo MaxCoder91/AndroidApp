@@ -12,9 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shadowColor="#000000"
-        android:shadowRadius="8 "
         android:shadowDx="3"
         android:shadowDy="5"
+        android:shadowRadius="8 "
         android:text="Editar evento"
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
@@ -116,30 +116,11 @@
         android:hint="Descripción(Opcional)"
         android:inputType="textMultiLine"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextAlarm4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextHour6" />
-
-    <EditText
-        android:id="@+id/editTextAlarm4"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/desc_style"
-        android:ems="10"
-        android:hint="Sonido de Alarma"
-        android:inputType="textPersonName"
-        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLine4" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextHour6" />
 
     <Button
         android:id="@+id/buttonEdit"
@@ -149,15 +130,15 @@
         android:layout_marginLeft="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Actualizar"
         android:background="@drawable/btn_style"
+        android:text="Actualizar"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAlarm4" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLine4" />
 
     <Button
         android:id="@+id/buttonDelete"
@@ -167,13 +148,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:text="Eliminar"
         android:background="@drawable/btn_style"
+        android:text="Eliminar"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonEdit"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAlarm4" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMultiLine4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

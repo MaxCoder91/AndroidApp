@@ -21,7 +21,10 @@ public class Eventos extends AppCompatActivity {
         btnCrearEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(Eventos.this,AgEventos.class);
+                DaoUsuario user = new DaoUsuario();
+                user.setId(getIntent().getExtras().getInt("idUser"));
+                Intent intent = new Intent(Eventos.this, AgEventos.class);
+                intent.putExtra("idUser",user.getId());
                 startActivity(intent);
             }
         });

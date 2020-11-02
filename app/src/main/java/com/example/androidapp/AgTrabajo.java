@@ -186,6 +186,7 @@ public class AgTrabajo extends AppCompatActivity {
                 Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
             }
             DaoUsuario user = new DaoUsuario();
+            user.setId(getIntent().getExtras().getInt("idUser"));
             Intent intent = new Intent(this, MenuPrincipal.class);
             intent.putExtra("idUser",user.getId());
             startActivity(intent);
@@ -198,8 +199,7 @@ public class AgTrabajo extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM tblevento";
         Cursor cursor = sqLiteDatabase.rawQuery(query,null);
-        //String title,desc,date,t1,t2;
-        //int id,idtype,idcat;
+
         if(cursor.moveToFirst()){
             do {
                 if(t.equals(cursor.getString(1))&&f.equals(cursor.getString(3))&&
