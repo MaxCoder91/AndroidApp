@@ -72,6 +72,7 @@ public class EditarEvento extends AppCompatActivity {
                 capturarHoraFin();
             }
         });
+
         btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,6 +207,6 @@ public class EditarEvento extends AppCompatActivity {
         DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         int nfilas = sqLiteDatabase.delete("tblEvento", "id="+id,null);
-        Toast.makeText(this, "Delete "+nfilas, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Evento eliminado con éxito", Toast.LENGTH_SHORT).show();
     }
 }

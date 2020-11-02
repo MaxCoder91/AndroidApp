@@ -142,6 +142,7 @@ public class AgTrabajo extends AppCompatActivity {
         },hora,minutos,false);
         tpDialog.show();
     }
+
     public void agendarEvento(){
         String titulo, fecha, horaIni="", horaFin="", desc;
         if(edtTitulo.getText().toString().trim().equalsIgnoreCase("")){

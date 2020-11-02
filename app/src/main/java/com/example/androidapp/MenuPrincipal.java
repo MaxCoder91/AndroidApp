@@ -72,10 +72,7 @@ public class MenuPrincipal extends AppCompatActivity {
         tvCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DaoUsuario user = new DaoUsuario();
-                user.setId(getIntent().getExtras().getInt("idUser"));
                 Intent intent = new Intent(MenuPrincipal.this, MainActivity.class);
-                intent.putExtra("idUser",user.getId());
                 startActivity(intent);
             }
         });
