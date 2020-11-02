@@ -59,6 +59,9 @@ public class MiCalendario extends AppCompatActivity {
                 intent.putExtra("fecha",fecha);
                 intent.putExtra("hinicio",hinicio);
                 intent.putExtra("hfinal",hfinal);
+
+                intent.putExtra("idUser",getIntent().getExtras().getInt("idUser"));
+
                 startActivity(intent);
             }
         });
@@ -67,6 +70,7 @@ public class MiCalendario extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MiCalendario.this, MenuPrincipal.class);
+                intent.putExtra("idUser",getIntent().getExtras().getInt("idUser"));
                 startActivity(intent);
             }
         });
