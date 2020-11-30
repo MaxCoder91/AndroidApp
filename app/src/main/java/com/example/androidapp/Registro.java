@@ -11,10 +11,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Registro extends AppCompatActivity {
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+public class Registro extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
 
     private EditText edtNombre, edtApellido, edtCorreo, edtPass, edtRePass;
     private Button btnRegistrar;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +38,7 @@ public class Registro extends AppCompatActivity {
         edtPass=findViewById(R.id.editTextTextPass);
         edtRePass=findViewById(R.id.editTextTextPass2);
         btnRegistrar=findViewById(R.id.buttonReg);
-
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +69,11 @@ public class Registro extends AppCompatActivity {
             apellido = edtApellido.getText().toString();
             mail = edtCorreo.getText().toString();
             pass = edtPass.getText().toString();
+            int idRol = 2;
+
+            String url = "http://192.168.0.107:80/serviciosApp/servicioinsertarusuario.php?nombre="+nombre+"&apellido="+apellido+"&correo="+mail+"&pass="+pass+"&idRol="+idRol;
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+            requestQueue.add(jsonObjectRequest);
 
             DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
             SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -82,5 +98,15 @@ public class Registro extends AppCompatActivity {
                 Toast.makeText(this, "Error al crear la bd", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
     }
 }
