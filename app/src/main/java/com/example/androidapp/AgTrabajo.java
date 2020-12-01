@@ -16,13 +16,24 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AgTrabajo extends AppCompatActivity {
+public class AgTrabajo extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
+    RequestQueue requestQueue, requestQueue2;
+    JsonObjectRequest jsonObjectRequest, jsonObjectRequest2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +46,8 @@ public class AgTrabajo extends AppCompatActivity {
         edtHoraFin=findViewById(R.id.editTextHour2);
         edtDesc=findViewById(R.id.editTextMultiLine);
         btnAgendar=findViewById(R.id.buttonCreate);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +172,19 @@ public class AgTrabajo extends AppCompatActivity {
             horaIni = edtHoraIni.getText().toString();
             horaFin = edtHoraFin.getText().toString();
             desc = edtDesc.getText().toString();
+            int idTipo, idCategoria;
+            idTipo = 1;
+            idCategoria = 1;
+
+            String url = "http://192.168.0.107:80/serviciosApp/servicioinsertareventos.php?titulo="+titulo+"&descripcion="+desc+"&fecha="+fecha+"&hinicio="+horaIni+"&hfinal="+horaFin+"&idTipo="+idTipo+"&idCategoria="+idCategoria;
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+            requestQueue.add(jsonObjectRequest);
+
+            int idTemporal=01;
+            String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idTemporal;
+            jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
+            requestQueue2.add(jsonObjectRequest2);
+
 
             DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
             SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -214,4 +240,13 @@ public class AgTrabajo extends AppCompatActivity {
         return idEvent;
     }
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
+    }
 }
