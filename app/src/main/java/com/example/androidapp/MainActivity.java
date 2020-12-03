@@ -7,19 +7,33 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener  {
 
     private EditText edtEmail, edtPass;
     private Button btnIngresar, btnCrearCta;
     private TextView tvRecPass;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnIngresar=findViewById(R.id.buttonSignIn);
         btnCrearCta=findViewById(R.id.buttonCreateAccount);
         tvRecPass=findViewById(R.id.textViewForgotPass);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void iniSesion(){
-        String mail,pass;
+        final String mail,pass;
         if(edtEmail.getText().toString().trim().equalsIgnoreCase("")){
             edtEmail.setError("Debe ingresar un correo");
         }else if(edtPass.getText().toString().trim().equalsIgnoreCase("")){
@@ -63,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
             mail = edtEmail.getText().toString();
             pass = edtPass.getText().toString();
 
+            String url = "http://192.168.0.107:80/serviciosApp/servicioinisesion.php?correo="+mail+"&pass="+pass;
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+            requestQueue.add(jsonObjectRequest);
+
+            /*
             List<DaoUsuario> tblUsuarios = new ArrayList();
             tblUsuarios = ListarUsuarios();
 
@@ -82,10 +102,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             Toast.makeText(this, msj, Toast.LENGTH_SHORT).show();
+            */
         }
     }
 
     public ArrayList<DaoUsuario> ListarUsuarios(){
+
         ArrayList<DaoUsuario>datos= new ArrayList<>();
         DbHelper dbHelper = new DbHelper( this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -104,5 +126,40 @@ public class MainActivity extends AppCompatActivity {
             }while (cursor.moveToNext());
         }
         return datos;
+
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "Usuario y/o contraseña incorrecta", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        //Toast.makeText(this, "Registro sincronizado con éxito "+response, Toast.LENGTH_SHORT).show();
+
+        DaoUsuario user = new DaoUsuario();
+
+        JSONArray json = response.optJSONArray("correo");
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = json.getJSONObject(0);
+            user.setId(jsonObject.optInt("id"));
+            user.setNombre(jsonObject.optString("nombre"));
+            user.setApellido(jsonObject.optString("apellido"));
+            user.setCorreo(jsonObject.optString("correo"));
+            user.setPass(jsonObject.optString("pass"));
+            user.setIdRol(jsonObject.optInt("idRol"));
+
+            Intent intent = new Intent(this, MenuPrincipal.class);
+            intent.putExtra("idUser",user.getId());
+
+            Toast.makeText(this, "Bienvenido "+user.getNombre()+" "+user.getApellido(), Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
