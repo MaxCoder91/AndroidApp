@@ -95,7 +95,7 @@ public class AgEventos extends AppCompatActivity implements Response.Listener<JS
                 }else{
                     fmes = String.valueOf(m1+1);
                 }
-                String fecha = fdia+"-"+fmes+"-"+y1;
+                String fecha = y1+"-"+fmes+"-"+fdia;
                 edtFecha.setText(fecha);
             }
         },year,month,day);

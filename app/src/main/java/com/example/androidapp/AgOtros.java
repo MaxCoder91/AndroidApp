@@ -94,7 +94,7 @@ public class AgOtros extends AppCompatActivity implements Response.Listener<JSON
                 }else{
                     fmes = String.valueOf(m1+1);
                 }
-                String fecha = fdia+"-"+fmes+"-"+y1;
+                String fecha = y1+"-"+fmes+"-"+fdia;
                 edtFecha.setText(fecha);
             }
         },year,month,day);
