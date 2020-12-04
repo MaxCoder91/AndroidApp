@@ -16,13 +16,24 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AgOtros extends AppCompatActivity {
+public class AgOtros extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +46,7 @@ public class AgOtros extends AppCompatActivity {
         edtHoraFin=findViewById(R.id.editTextHour5);
         edtDesc=findViewById(R.id.editTextMultiLine3);
         btnAgendar=findViewById(R.id.buttonCreate3);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +168,15 @@ public class AgOtros extends AppCompatActivity {
             horaIni = edtHoraIni.getText().toString();
             horaFin = edtHoraFin.getText().toString();
             desc = edtDesc.getText().toString();
+            int idTipo, idCategoria;
+            idTipo = 1;
+            idCategoria = 3;
 
+            String url = "http://192.168.0.107:80/serviciosApp/servicioinsertareventos.php?titulo="+titulo+"&descripcion="+desc+"&fecha="+fecha+"&hinicio="+horaIni+"&hfinal="+horaFin+"&idTipo="+idTipo+"&idCategoria="+idCategoria;
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+            requestQueue.add(jsonObjectRequest);
+
+            /*
             DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
             SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
             if(sqLiteDatabase!=null){
@@ -182,6 +202,7 @@ public class AgOtros extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
             }
+            */
             DaoUsuario user = new DaoUsuario();
             user.setId(getIntent().getExtras().getInt("idUser"));
             Intent intent = new Intent(this, MenuPrincipal.class);
@@ -208,5 +229,15 @@ public class AgOtros extends AppCompatActivity {
             }while(cursor.moveToNext());
         }
         return idEvent;
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
     }
 }

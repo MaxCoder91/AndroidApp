@@ -180,12 +180,13 @@ public class AgTrabajo extends AppCompatActivity implements Response.Listener<JS
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
             requestQueue.add(jsonObjectRequest);
 
-            int idTemporal=01;
-            String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idTemporal;
-            jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
-            requestQueue2.add(jsonObjectRequest2);
+            int idUser = getIntent().getExtras().getInt("idUser");
 
+            //String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idUser;
+            //jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
+            //requestQueue2.add(jsonObjectRequest2);
 
+            /*
             DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
             SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
             if(sqLiteDatabase!=null){
@@ -211,6 +212,7 @@ public class AgTrabajo extends AppCompatActivity implements Response.Listener<JS
             }else{
                 Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
             }
+            */
             DaoUsuario user = new DaoUsuario();
             user.setId(getIntent().getExtras().getInt("idUser"));
             Intent intent = new Intent(this, MenuPrincipal.class);
