@@ -13,17 +13,30 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class MiCalendario extends AppCompatActivity {
     ListView lvEventos;
     Button btnVolver;
+    RequestQueue requestQueue;
 
     //Método de refresh.(AutoPostBack)
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        inflateView();
+        //inflateView();
+        cargarDatos();
     }
 
     @Override
@@ -33,8 +46,10 @@ public class MiCalendario extends AppCompatActivity {
 
         lvEventos=findViewById(R.id.lvEventos);
         btnVolver = findViewById(R.id.btnVolver);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        inflateView();
+        //inflateView();
+        cargarDatos();
 
         lvEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +91,62 @@ public class MiCalendario extends AppCompatActivity {
         });
     }
 
+
+    public void cargarDatos(){
+
+        String url = "http://192.168.0.107:80/serviciosApp/serviciolistareventos.php";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try{
+                    //vamos a recibir lo que me envia el servicio o web service.
+                    JSONArray jsonArray = response.getJSONArray("evento");
+                    //necesito un array para llenarlo con los datos devueltos por elservicio, response.
+                    ArrayList<String> datos = new ArrayList<>();
+                    // recorremos la estructura JSON con un ciclo y vamos poblando el arreglo.
+                    for(int i=0; i<jsonArray.length(); i++){
+                        JSONObject evento = jsonArray.getJSONObject(i);
+                        int id = evento.getInt("id");
+                        String titulo = evento.getString("titulo");
+                        String descripcion = evento.getString("descripcion");
+                        String fecha = evento.getString("fecha");
+                        String hinicio = evento.getString("hinicio");
+                        String hfinal = evento.getString("hfinal");
+                        String item = id+" / "+titulo+" / "+descripcion+" / "+fecha+" / "+hinicio+" / "+hfinal;
+                        datos.add(item);
+                    }
+                    //fin del recorrido y carga de datos en un arraylist.
+
+                    //armamos el array Adaptar.
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, datos);
+                    //seteamos el array adapter.
+                    lvEventos.setAdapter(arrayAdapter);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String msjerror = error.getMessage();
+                Toast.makeText(MiCalendario.this, "Error "+msjerror, Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest); //ejecutamos la petición que está cargada en jsonObjectRequest.
+    }
+
+
+
+
+
+
+
+
+
     public ArrayList<String>ListarEventos(){
+
         ArrayList<String>datos= new ArrayList<>();
         DbHelper dbHelper = new DbHelper( this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();

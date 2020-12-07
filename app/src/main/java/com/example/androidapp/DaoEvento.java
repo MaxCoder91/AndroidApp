@@ -10,11 +10,12 @@ public class DaoEvento {
     private String hfinal;
     private int idTipo;
     private int idCategoria;
+    private int foto;
 
     public DaoEvento() {
     }
 
-    public DaoEvento(int id, String titulo, String descripcion, String fecha, String hinicio, String hfinal, int idTipo, int idCategoria) {
+    public DaoEvento(int id, String titulo, String descripcion, String fecha, String hinicio, String hfinal, int idTipo, int idCategoria, int foto) {
         Id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -23,6 +24,7 @@ public class DaoEvento {
         this.hfinal = hfinal;
         this.idTipo = idTipo;
         this.idCategoria = idCategoria;
+        this.foto = foto;
     }
 
     public int getId() {
@@ -87,5 +89,13 @@ public class DaoEvento {
 
     public void setIdCategoria(int idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    public int getFoto() {
+        return foto;
+    }
+
+    public void setFoto(int foto) {
+        this.foto = foto;
     }
 }
