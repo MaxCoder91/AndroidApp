@@ -172,6 +172,8 @@ public class AgTrabajo extends AppCompatActivity implements Response.Listener<JS
             horaIni = edtHoraIni.getText().toString();
             horaFin = edtHoraFin.getText().toString();
             desc = edtDesc.getText().toString();
+            titulo = titulo.replaceAll(" ", "%20");
+            desc = desc.replaceAll(" ", "%20");
             int idTipo, idCategoria;
             idTipo = 1;
             idCategoria = 1;
@@ -179,12 +181,6 @@ public class AgTrabajo extends AppCompatActivity implements Response.Listener<JS
             String url = "http://192.168.0.107:80/serviciosApp/servicioinsertareventos.php?titulo="+titulo+"&descripcion="+desc+"&fecha="+fecha+"&hinicio="+horaIni+"&hfinal="+horaFin+"&idTipo="+idTipo+"&idCategoria="+idCategoria;
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
             requestQueue.add(jsonObjectRequest);
-
-            int idUser = getIntent().getExtras().getInt("idUser");
-
-            //String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idUser;
-            //jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
-            //requestQueue2.add(jsonObjectRequest2);
 
             /*
             DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
@@ -244,11 +240,16 @@ public class AgTrabajo extends AppCompatActivity implements Response.Listener<JS
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
+        int idUser = getIntent().getExtras().getInt("idUser");
+
+        String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idUser;
+        jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
+        requestQueue2.add(jsonObjectRequest2);
     }
 }

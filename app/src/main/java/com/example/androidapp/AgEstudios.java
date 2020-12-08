@@ -32,8 +32,8 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnAgendar;
-    RequestQueue requestQueue;
-    JsonObjectRequest jsonObjectRequest;
+    RequestQueue requestQueue, requestQueue2;
+    JsonObjectRequest jsonObjectRequest, jsonObjectRequest2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
         edtDesc=findViewById(R.id.editTextMultiLine2);
         btnAgendar=findViewById(R.id.buttonCreate2);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
         edtFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +170,8 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
             horaIni = edtHoraIni.getText().toString();
             horaFin = edtHoraFin.getText().toString();
             desc = edtDesc.getText().toString();
+            titulo = titulo.replaceAll(" ", "%20");
+            desc = desc.replaceAll(" ", "%20");
             int idTipo, idCategoria;
             idTipo = 1;
             idCategoria = 2;
@@ -234,11 +237,16 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
+        int idUser = getIntent().getExtras().getInt("idUser");
+
+        String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idUser;
+        jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);
+        requestQueue2.add(jsonObjectRequest2);
     }
 }
