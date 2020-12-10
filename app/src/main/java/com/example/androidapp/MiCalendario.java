@@ -60,12 +60,12 @@ public class MiCalendario extends AppCompatActivity {
 
 
 
-                id = item.split("/")[0];
-                titulo = item.split("/")[1];
-                descripcion = item.split("/")[2];
-                fecha = item.split("/")[3];
-                hinicio = item.split("/")[4];
-                hfinal = item.split("/")[5];
+                id = item.split(" / ")[0];
+                titulo = item.split(" / ")[1];
+                descripcion = item.split(" / ")[2];
+                fecha = item.split(" / ")[3];
+                hinicio = item.split(" / ")[4];
+                hfinal = item.split(" / ")[5];
 
                 Intent intent = new Intent(MiCalendario.this, EditarEvento.class);
                 intent.putExtra("id",id);
@@ -94,7 +94,8 @@ public class MiCalendario extends AppCompatActivity {
 
     public void cargarDatos(){
 
-        String url = "http://192.168.0.107:80/serviciosApp/serviciolistareventos.php";
+        int idUser = getIntent().getExtras().getInt("idUser");
+        String url = "http://192.168.0.107:80/serviciosApp/serviciolistareventos.php?idUser="+idUser;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -136,14 +137,6 @@ public class MiCalendario extends AppCompatActivity {
         });
         requestQueue.add(jsonObjectRequest); //ejecutamos la petición que está cargada en jsonObjectRequest.
     }
-
-
-
-
-
-
-
-
 
     public ArrayList<String>ListarEventos(){
 

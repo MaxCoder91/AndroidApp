@@ -15,12 +15,23 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
-public class EditarEvento extends AppCompatActivity {
+public class EditarEvento extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private EditText edtTitulo, edtFecha, edtHoraIni, edtHoraFin, edtDesc;
     private Button btnActualizar, btnEliminar;
+    RequestQueue requestQueue;
+    JsonObjectRequest jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,7 @@ public class EditarEvento extends AppCompatActivity {
         edtDesc=findViewById(R.id.editTextMultiLine4);
         btnActualizar=findViewById(R.id.buttonEdit);
         btnEliminar=findViewById(R.id.buttonDelete);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         String titulo, descripcion,fecha, hinicio, hfinal,id,idTipo,idCategoria;
 
@@ -82,9 +94,9 @@ public class EditarEvento extends AppCompatActivity {
                 hinicio = edtHoraIni.getText().toString();
                 hfinal = edtHoraFin.getText().toString();
                 id = getIntent().getExtras().getString("id");
-                idTipo = getIntent().getExtras().getString("idTipo");
-                idCategoria = getIntent().getExtras().getString("idCategoria");
-                Actualizar(titulo,descripcion,fecha,hinicio,hfinal,id,idTipo,idCategoria);
+                //idTipo = getIntent().getExtras().getString("idTipo");
+                //idCategoria = getIntent().getExtras().getString("idCategoria");
+                Actualizar(titulo,descripcion,fecha,hinicio,hfinal,id);
                 onBackPressed();
             }
         });
@@ -125,7 +137,7 @@ public class EditarEvento extends AppCompatActivity {
                 }else{
                     fmes = String.valueOf(m1+1);
                 }
-                String fecha = fdia+"-"+fmes+"-"+y1;
+                String fecha = y1+"-"+fmes+"-"+fdia;
                 edtFecha.setText(fecha);
             }
         },year,month,day);
@@ -183,7 +195,16 @@ public class EditarEvento extends AppCompatActivity {
         },hora,minutos,false);
         tpDialog.show();
     }
-    public void Actualizar(String titulo, String descripcion,String fecha, String hinicio, String hfinal, String id, String idTipo, String idCategoria) {
+    public void Actualizar(String titulo, String descripcion,String fecha, String hinicio, String hfinal, String id) {
+
+        titulo = titulo.replaceAll(" ", "%20");
+        descripcion = descripcion.replaceAll(" ", "%20");
+
+        String url = "http://192.168.0.107:80/serviciosApp/servicioactualizar.php?titulo="+titulo+"&descripcion="+descripcion+"&fecha="+fecha+"&hinicio="+hinicio+"&hfinal="+hfinal+"&id="+id;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+        requestQueue.add(jsonObjectRequest);
+
+        /*
         DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues cvalues = new ContentValues();
@@ -200,12 +221,30 @@ public class EditarEvento extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Error al actualizar", Toast.LENGTH_SHORT).show();
         }
+        */
     }
 
     public void Eliminar(String id){
+
+        String url = "http://192.168.0.107:80/serviciosApp/servicioeliminar.php?id="+id;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,null,this,this);
+        requestQueue.add(jsonObjectRequest);
+
+        /*
         DbHelper dbHelper = new DbHelper(this,"dbCheckp",null,1);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         int nfilas = sqLiteDatabase.delete("tblEvento", "id="+id,null);
         Toast.makeText(this, "Evento eliminado con éxito", Toast.LENGTH_SHORT).show();
+         */
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        //Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
     }
 }
