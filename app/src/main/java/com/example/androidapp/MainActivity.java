@@ -42,6 +42,14 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        int idUser = sharedPreferences.getInt("id", 0);
+        
+        if(idUser!=0){
+            Intent intent = new Intent(MainActivity.this, MenuPrincipal.class);
+            startActivity(intent);
+        }
+
         edtEmail=findViewById(R.id.editTextTextEmailAddress);
         edtPass=findViewById(R.id.editTextTextPassword);
         btnIngresar=findViewById(R.id.buttonSignIn);
@@ -142,21 +150,11 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
 
-        DaoUsuario user = new DaoUsuario();
-
         JSONArray json = response.optJSONArray("correo");
         JSONObject jsonObject = null;
 
         try {
             jsonObject = json.getJSONObject(0);
-            /*
-            user.setId(jsonObject.optInt("id"));
-            user.setNombre(jsonObject.optString("nombre"));
-            user.setApellido(jsonObject.optString("apellido"));
-            user.setCorreo(jsonObject.optString("correo"));
-            user.setPass(jsonObject.optString("pass"));
-            user.setIdRol(jsonObject.optInt("idRol"));
-            */
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("id",jsonObject.optInt("id"));

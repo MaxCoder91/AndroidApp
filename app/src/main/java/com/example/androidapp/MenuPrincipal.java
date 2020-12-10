@@ -13,12 +13,16 @@ import android.widget.TextView;
 public class MenuPrincipal extends AppCompatActivity {
 
     private Button btnEventos, btnTrabajo, btnEstudio, btnOtros;
-    private TextView tvCerrarSesion, MiCalendario;
+    private TextView tvCerrarSesion, MiCalendario, Usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        String name = sharedPreferences.getString("nombre", "null");
+        String lastname = sharedPreferences.getString("apellido", "null");
 
         btnEventos=findViewById(R.id.buttonEvents);
         btnTrabajo=findViewById(R.id.buttonJobs);
@@ -26,6 +30,9 @@ public class MenuPrincipal extends AppCompatActivity {
         btnOtros=findViewById(R.id.buttonOthers);
         tvCerrarSesion=findViewById(R.id.textViewClose);
         MiCalendario=findViewById((R.id.calendarIcon));
+        Usuario=findViewById(R.id.textViewName);
+
+        Usuario.setText(name+" "+lastname);
 
         btnEventos.setOnClickListener(new View.OnClickListener() {
             @Override
