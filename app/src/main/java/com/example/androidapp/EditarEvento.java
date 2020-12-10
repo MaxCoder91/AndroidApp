@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -47,16 +49,13 @@ public class EditarEvento extends AppCompatActivity implements Response.Listener
         btnEliminar=findViewById(R.id.buttonDelete);
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        String titulo, descripcion,fecha, hinicio, hfinal,id,idTipo,idCategoria;
+        String titulo, descripcion,fecha, hinicio, hfinal;
 
-        id = getIntent().getExtras().getString("id");
         titulo = getIntent().getExtras().getString("titulo");
         descripcion = getIntent().getExtras().getString("descripcion");
         fecha = getIntent().getExtras().getString("fecha");
         hinicio = getIntent().getExtras().getString("hinicio");
         hfinal = getIntent().getExtras().getString("hfinal");
-        idTipo = getIntent().getExtras().getString("idTipo");
-        idCategoria = getIntent().getExtras().getString("idCategoria");
 
         edtTitulo.setText(titulo);
         edtFecha.setText(fecha);
@@ -87,15 +86,14 @@ public class EditarEvento extends AppCompatActivity implements Response.Listener
         btnActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String titulo,descripcion,fecha,hinicio,hfinal,id,idTipo,idCategoria;
+                String titulo,descripcion,fecha,hinicio,hfinal,id;
                 titulo = edtTitulo.getText().toString();
                 descripcion = edtDesc.getText().toString();
                 fecha = edtFecha.getText().toString();
                 hinicio = edtHoraIni.getText().toString();
                 hfinal = edtHoraFin.getText().toString();
                 id = getIntent().getExtras().getString("id");
-                //idTipo = getIntent().getExtras().getString("idTipo");
-                //idCategoria = getIntent().getExtras().getString("idCategoria");
+
                 Actualizar(titulo,descripcion,fecha,hinicio,hfinal,id);
                 onBackPressed();
             }

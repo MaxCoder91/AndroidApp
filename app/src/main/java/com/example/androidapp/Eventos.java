@@ -50,10 +50,7 @@ public class Eventos extends AppCompatActivity {
         btnCrearEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DaoUsuario user = new DaoUsuario();
-                user.setId(getIntent().getExtras().getInt("idUser"));
                 Intent intent = new Intent(Eventos.this, AgEventos.class);
-                intent.putExtra("idUser",user.getId());
                 startActivity(intent);
             }
         });
@@ -85,15 +82,5 @@ public class Eventos extends AppCompatActivity {
             }
         });
         requestQueue.add(jsonObjectRequest); //ejecutamos la petición que está cargada en jsonObjectRequest.
-
-        /*
-
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        listaEventos.add(new DaoEvento(1,"Evento1","Desc1","Fecha1","hora1","hora2",1,2,R.drawable.eventicon));
-        */
     }
 }

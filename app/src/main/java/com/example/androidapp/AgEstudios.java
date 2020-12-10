@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -207,14 +209,11 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
                 Toast.makeText(this, "Error al crear la bbdd", Toast.LENGTH_SHORT).show();
             }
             */
-            DaoUsuario user = new DaoUsuario();
-            user.setId(getIntent().getExtras().getInt("idUser"));
             Intent intent = new Intent(this, MenuPrincipal.class);
-            intent.putExtra("idUser",user.getId());
             startActivity(intent);
         }
     }
-
+    /*
     public int RescatarId(String t,String f, String hi, String hf, int idt, int idc){
         int idEvent=0;
         ArrayList<String> datos = new ArrayList<>();
@@ -234,7 +233,7 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
         }
         return idEvent;
     }
-
+    */
     @Override
     public void onErrorResponse(VolleyError error) {
         //Toast.makeText(this, "Error al sincronizar", Toast.LENGTH_SHORT).show();
@@ -243,7 +242,9 @@ public class AgEstudios extends AppCompatActivity implements Response.Listener<J
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(this, "Registro sincronizado con éxito", Toast.LENGTH_SHORT).show();
-        int idUser = getIntent().getExtras().getInt("idUser");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        int idUser = sharedPreferences.getInt("id", 0);
 
         String url2 = "http://192.168.0.107:80/serviciosApp/susuarioevento.php?idUser="+idUser;
         jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, url2,null,this,this);

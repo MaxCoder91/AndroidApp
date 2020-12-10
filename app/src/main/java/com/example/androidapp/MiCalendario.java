@@ -2,7 +2,9 @@ package com.example.androidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -54,11 +56,9 @@ public class MiCalendario extends AppCompatActivity {
         lvEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String item,titulo,descripcion,fecha,hinicio,hfinal,id,idTipo,idCategoria;
+                String item,titulo,descripcion,fecha,hinicio,hfinal,id;
                 item = lvEventos.getItemAtPosition(i).toString();
                 Toast.makeText(MiCalendario.this, "Item recuperado "+item, Toast.LENGTH_SHORT).show();
-
-
 
                 id = item.split(" / ")[0];
                 titulo = item.split(" / ")[1];
@@ -75,8 +75,6 @@ public class MiCalendario extends AppCompatActivity {
                 intent.putExtra("hinicio",hinicio);
                 intent.putExtra("hfinal",hfinal);
 
-                intent.putExtra("idUser",getIntent().getExtras().getInt("idUser"));
-
                 startActivity(intent);
             }
         });
@@ -85,7 +83,7 @@ public class MiCalendario extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MiCalendario.this, MenuPrincipal.class);
-                intent.putExtra("idUser",getIntent().getExtras().getInt("idUser"));
+                //intent.putExtra("idUser",getIntent().getExtras().getInt("idUser"));
                 startActivity(intent);
             }
         });
@@ -93,8 +91,10 @@ public class MiCalendario extends AppCompatActivity {
 
 
     public void cargarDatos(){
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+        int idUser = sharedPreferences.getInt("id", 0);
 
-        int idUser = getIntent().getExtras().getInt("idUser");
+        //int idUser = getIntent().getExtras().getInt("idUser");
         String url = "http://192.168.0.107:80/serviciosApp/serviciolistareventos.php?idUser="+idUser;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -132,12 +132,13 @@ public class MiCalendario extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 String msjerror = error.getMessage();
-                Toast.makeText(MiCalendario.this, "Error "+msjerror, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MiCalendario.this, "Error "+msjerror, Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest); //ejecutamos la petición que está cargada en jsonObjectRequest.
     }
 
+    /*
     public ArrayList<String>ListarEventos(){
 
         ArrayList<String>datos= new ArrayList<>();
@@ -166,4 +167,5 @@ public class MiCalendario extends AppCompatActivity {
         ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,origenDatos);
         lvEventos.setAdapter(arrayAdapter);
     }
+    */
 }

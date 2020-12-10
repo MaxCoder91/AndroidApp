@@ -2,7 +2,9 @@ package com.example.androidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -138,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
     public void onResponse(JSONObject response) {
         //Toast.makeText(this, "Registro sincronizado con éxito "+response, Toast.LENGTH_SHORT).show();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
+
         DaoUsuario user = new DaoUsuario();
 
         JSONArray json = response.optJSONArray("correo");
@@ -145,17 +149,26 @@ public class MainActivity extends AppCompatActivity implements Response.Listener
 
         try {
             jsonObject = json.getJSONObject(0);
+            /*
             user.setId(jsonObject.optInt("id"));
             user.setNombre(jsonObject.optString("nombre"));
             user.setApellido(jsonObject.optString("apellido"));
             user.setCorreo(jsonObject.optString("correo"));
             user.setPass(jsonObject.optString("pass"));
             user.setIdRol(jsonObject.optInt("idRol"));
+            */
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("id",jsonObject.optInt("id"));
+            editor.putString("nombre",jsonObject.optString("nombre"));
+            editor.putString("apellido",jsonObject.optString("apellido"));
+
+            editor.commit();
 
             Intent intent = new Intent(this, MenuPrincipal.class);
-            intent.putExtra("idUser",user.getId());
+            //intent.putExtra("idUser",user.getId());
 
-            Toast.makeText(this, "Bienvenido "+user.getNombre()+" "+user.getApellido(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bienvenido "+sharedPreferences.getString("nombre","null")+" "+sharedPreferences.getString("apellido","null"), Toast.LENGTH_SHORT).show();
             startActivity(intent);
 
         } catch (JSONException e) {
